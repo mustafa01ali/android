@@ -19,9 +19,9 @@ import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.view.ViewGroup;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.R;
 import com.github.mobile.ui.FragmentPagerAdapter;
 import com.github.mobile.ui.repo.RepositoryListFragment;
@@ -46,8 +46,8 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
      * @param activity
      * @param defaultUser
      */
-    public HomePagerAdapter(final SherlockFragmentActivity activity,
-            final boolean defaultUser) {
+    public HomePagerAdapter(final ActionBarActivity activity,
+        final boolean defaultUser) {
         super(activity);
 
         fragmentManager = activity.getSupportFragmentManager();
@@ -58,18 +58,18 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-        case 0:
-            return defaultUser ? new UserReceivedNewsFragment()
+            case 0:
+                return defaultUser ? new UserReceivedNewsFragment()
                     : new OrganizationNewsFragment();
-        case 1:
-            return new RepositoryListFragment();
-        case 2:
-            return defaultUser ? new MyFollowersFragment()
+            case 1:
+                return new RepositoryListFragment();
+            case 2:
+                return defaultUser ? new MyFollowersFragment()
                     : new MembersFragment();
-        case 3:
-            return new MyFollowingFragment();
-        default:
-            return null;
+            case 3:
+                return new MyFollowingFragment();
+            default:
+                return null;
         }
     }
 
@@ -118,17 +118,17 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-        case 0:
-            return resources.getString(R.string.tab_news);
-        case 1:
-            return resources.getString(R.string.tab_repositories);
-        case 2:
-            return resources.getString(defaultUser ? R.string.tab_followers_self
+            case 0:
+                return resources.getString(R.string.tab_news);
+            case 1:
+                return resources.getString(R.string.tab_repositories);
+            case 2:
+                return resources.getString(defaultUser ? R.string.tab_followers_self
                     : R.string.tab_members);
-        case 3:
-            return resources.getString(R.string.tab_following_self);
-        default:
-            return null;
+            case 3:
+                return resources.getString(R.string.tab_following_self);
+            default:
+                return null;
         }
     }
 }

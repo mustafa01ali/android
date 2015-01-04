@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
@@ -35,17 +36,16 @@ import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.mobile.R;
 import com.github.mobile.ui.LightProgressDialog;
 import com.github.mobile.ui.TextWatcherAdapter;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
 
 import java.io.IOException;
 
@@ -58,7 +58,7 @@ import roboguice.util.RoboAsyncTask;
 /**
  * Activity to enter two-factor authentication OTP code
  */
-public class TwoFactorAuthActivity extends RoboSherlockActivity {
+public class TwoFactorAuthActivity extends ActionBarActivity {
 
     /**
      * Create intent to enter two-factor authentication code
@@ -136,7 +136,7 @@ public class TwoFactorAuthActivity extends RoboSherlockActivity {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event != null && ACTION_DOWN == event.getAction()
-                        && keyCode == KEYCODE_ENTER && loginEnabled()) {
+                    && keyCode == KEYCODE_ENTER && loginEnabled()) {
                     handleLogin();
                     return true;
                 } else
@@ -148,7 +148,7 @@ public class TwoFactorAuthActivity extends RoboSherlockActivity {
 
             @Override
             public boolean onEditorAction(TextView v, int actionId,
-                    KeyEvent event) {
+                KeyEvent event) {
                 if (actionId == IME_ACTION_DONE && loginEnabled()) {
                     handleLogin();
                     return true;
@@ -177,17 +177,17 @@ public class TwoFactorAuthActivity extends RoboSherlockActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_login:
-            handleLogin();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_login:
+                handleLogin();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        getSupportMenuInflater().inflate(R.menu.login, optionsMenu);
+        getMenuInflater().inflate(R.menu.login, optionsMenu);
         loginItem = optionsMenu.findItem(R.id.m_login);
         return true;
     }
@@ -196,7 +196,7 @@ public class TwoFactorAuthActivity extends RoboSherlockActivity {
         final String otpCode = otpCodeText.getText().toString();
 
         final AlertDialog dialog = LightProgressDialog.create(this,
-                R.string.login_activity_authenticating);
+            R.string.login_activity_authenticating);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(new OnCancelListener() {
 

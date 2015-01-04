@@ -15,7 +15,6 @@
  */
 package com.github.mobile.ui.user;
 
-import static com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_BOOKMARKS;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_DASHBOARD;
 import static com.github.mobile.ui.user.HomeDropdownListAdapter.ACTION_GISTS;
@@ -29,14 +28,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R;
 import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.user.UserComparator;
@@ -62,8 +60,8 @@ import org.eclipse.egit.github.core.User;
  * Home screen activity
  */
 public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
-        OnNavigationListener, OrganizationSelectionProvider,
-        LoaderCallbacks<List<User>> {
+    ActionBar.OnNavigationListener, OrganizationSelectionProvider,
+    LoaderCallbacks<List<User>> {
 
     private static final String TAG = "HomeActivity";
 
@@ -81,7 +79,8 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     private HomeDropdownListAdapter homeAdapter;
 
-    private Set<OrganizationSelectionListener> orgSelectionListeners = new LinkedHashSet<OrganizationSelectionListener>();
+    private Set<OrganizationSelectionListener> orgSelectionListeners = new
+        LinkedHashSet<OrganizationSelectionListener>();
 
     private User org;
 
@@ -100,43 +99,43 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     private void reloadOrgs() {
         getSupportLoaderManager().restartLoader(0, null,
-                new LoaderCallbacks<List<User>>() {
+            new LoaderCallbacks<List<User>>() {
 
-                    @Override
-                    public Loader<List<User>> onCreateLoader(int id,
-                            Bundle bundle) {
-                        return HomeActivity.this.onCreateLoader(id, bundle);
-                    }
+                @Override
+                public Loader<List<User>> onCreateLoader(int id,
+                    Bundle bundle) {
+                    return HomeActivity.this.onCreateLoader(id, bundle);
+                }
 
-                    @Override
-                    public void onLoadFinished(Loader<List<User>> loader,
-                            final List<User> users) {
-                        HomeActivity.this.onLoadFinished(loader, users);
-                        if (users.isEmpty())
-                            return;
+                @Override
+                public void onLoadFinished(Loader<List<User>> loader,
+                    final List<User> users) {
+                    HomeActivity.this.onLoadFinished(loader, users);
+                    if (users.isEmpty())
+                        return;
 
-                        Window window = getWindow();
-                        if (window == null)
-                            return;
-                        View view = window.getDecorView();
-                        if (view == null)
-                            return;
+                    Window window = getWindow();
+                    if (window == null)
+                        return;
+                    View view = window.getDecorView();
+                    if (view == null)
+                        return;
 
-                        view.post(new Runnable() {
+                    view.post(new Runnable() {
 
-                            @Override
-                            public void run() {
-                                isDefaultUser = false;
-                                setOrg(users.get(0));
-                            }
-                        });
-                    }
+                        @Override
+                        public void run() {
+                            isDefaultUser = false;
+                            setOrg(users.get(0));
+                        }
+                    });
+                }
 
-                    @Override
-                    public void onLoaderReset(Loader<List<User>> loader) {
-                        HomeActivity.this.onLoaderReset(loader);
-                    }
-                });
+                @Override
+                public void onLoaderReset(Loader<List<User>> loader) {
+                    HomeActivity.this.onLoaderReset(loader);
+                }
+            });
     }
 
     @Override
@@ -147,7 +146,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         // account
         List<User> currentOrgs = orgs;
         if (currentOrgs != null && !currentOrgs.isEmpty()
-                && !AccountUtils.isUser(this, currentOrgs.get(0)))
+            && !AccountUtils.isUser(this, currentOrgs.get(0)))
             reloadOrgs();
     }
 
@@ -155,7 +154,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setNavigationMode(NAVIGATION_MODE_LIST);
+//        actionBar.setNavigationMode(NAVIGATION_MODE_LIST);
 
         homeAdapter = new HomeDropdownListAdapter(this, orgs, avatars);
         actionBar.setListNavigationCallbacks(homeAdapter, this);
@@ -165,7 +164,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
         Log.d(TAG, "setOrg : " + org.getLogin());
 
         PreferenceUtils.save(sharedPreferences.edit().putInt(PREF_ORG_ID,
-                org.getId()));
+            org.getId()));
 
         // Don't notify listeners or change pager if org hasn't changed
         if (this.org != null && this.org.getId() == org.getId())
@@ -194,7 +193,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionMenu) {
-        getSupportMenuInflater().inflate(R.menu.home, optionMenu);
+        getMenuInflater().inflate(R.menu.home, optionMenu);
 
         return super.onCreateOptionsMenu(optionMenu);
     }
@@ -202,11 +201,11 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_search:
-            onSearchRequested();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_search:
+                onSearchRequested();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -217,15 +216,15 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
             setOrg(orgs.get(itemPosition));
         } else if (homeAdapter.getOrgCount() > 0) {
             switch (homeAdapter.getAction(itemPosition)) {
-            case ACTION_GISTS:
-                startActivity(new Intent(this, GistsActivity.class));
-                break;
-            case ACTION_DASHBOARD:
-                startActivity(new Intent(this, IssueDashboardActivity.class));
-                break;
-            case ACTION_BOOKMARKS:
-                startActivity(FiltersViewActivity.createIntent());
-                break;
+                case ACTION_GISTS:
+                    startActivity(new Intent(this, GistsActivity.class));
+                    break;
+                case ACTION_DASHBOARD:
+                    startActivity(new Intent(this, IssueDashboardActivity.class));
+                    break;
+                case ACTION_BOOKMARKS:
+                    startActivity(FiltersViewActivity.createIntent());
+                    break;
             }
             int orgSelected = homeAdapter.getSelected();
             ActionBar actionBar = getSupportActionBar();
@@ -238,7 +237,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
     @Override
     public Loader<List<User>> onCreateLoader(int i, Bundle bundle) {
         return new OrganizationLoader(this, accountDataManager,
-                userComparatorProvider);
+            userComparatorProvider);
     }
 
     @Override
@@ -274,7 +273,7 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
 
     @Override
     public OrganizationSelectionProvider removeListener(
-            OrganizationSelectionListener listener) {
+        OrganizationSelectionListener listener) {
         if (listener != null)
             orgSelectionListeners.remove(listener);
         return this;
@@ -288,16 +287,16 @@ public class HomeActivity extends TabPagerActivity<HomePagerAdapter> implements
     @Override
     protected String getIcon(int position) {
         switch (position) {
-        case 0:
-            return ICON_NEWS;
-        case 1:
-            return ICON_PUBLIC;
-        case 2:
-            return isDefaultUser ? ICON_WATCH : ICON_TEAM;
-        case 3:
-            return ICON_FOLLOW;
-        default:
-            return super.getIcon(position);
+            case 0:
+                return ICON_NEWS;
+            case 1:
+                return ICON_PUBLIC;
+            case 2:
+                return isDefaultUser ? ICON_WATCH : ICON_TEAM;
+            case 3:
+                return ICON_FOLLOW;
+            default:
+                return super.getIcon(position);
         }
     }
 }

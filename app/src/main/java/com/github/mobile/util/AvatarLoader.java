@@ -24,11 +24,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.mobile.R;
 import com.github.mobile.core.search.SearchUser;
@@ -61,10 +61,10 @@ public class AvatarLoader {
     private static final int CACHE_SIZE = 75;
 
     private static abstract class FetchAvatarTask extends
-            RoboAsyncTask<BitmapDrawable> {
+        RoboAsyncTask<BitmapDrawable> {
 
         private static final Executor EXECUTOR = Executors
-                .newFixedThreadPool(1);
+            .newFixedThreadPool(1);
 
         private FetchAvatarTask(Context context) {
             super(context, EXECUTOR);
@@ -79,13 +79,13 @@ public class AvatarLoader {
     private final float cornerRadius;
 
     private final Map<Object, BitmapDrawable> loaded = new LinkedHashMap<Object, BitmapDrawable>(
-            CACHE_SIZE, 1.0F) {
+        CACHE_SIZE, 1.0F) {
 
         private static final long serialVersionUID = -4191624209581976720L;
 
         @Override
         protected boolean removeEldestEntry(
-                Map.Entry<Object, BitmapDrawable> eldest) {
+            Map.Entry<Object, BitmapDrawable> eldest) {
             return size() >= CACHE_SIZE;
         }
     };
@@ -113,7 +113,7 @@ public class AvatarLoader {
         this.context = context;
 
         loadingAvatar = context.getResources().getDrawable(
-                R.drawable.gravatar_icon);
+            R.drawable.gravatar_icon);
 
         avatarDir = new File(context.getCacheDir(), "avatars/github.com");
         if (!avatarDir.isDirectory())
@@ -161,6 +161,7 @@ public class AvatarLoader {
     /**
      * Load an avatar from the given file and automatically rescale it to the
      * target dimensions to save memory.
+     *
      * @param file The file name to load the avatar from.
      * @return The rescaled avatar bitmap, or null.
      */
@@ -180,7 +181,7 @@ public class AvatarLoader {
      * @return bitmap
      */
     protected BitmapDrawable fetchAvatar(final String url,
-            final String userId, final String cachedAvatarFilename) {
+        final String userId, final String cachedAvatarFilename) {
         File userAvatarDir = new File(avatarDir, userId);
         deleteCachedUserAvatars(userAvatarDir);
         userAvatarDir.mkdirs();
@@ -246,7 +247,7 @@ public class AvatarLoader {
      * @return this helper
      */
     public AvatarLoader bind(final ActionBar actionBar,
-            final AtomicReference<User> userReference) {
+        final AtomicReference<User> userReference) {
         if (userReference == null)
             return this;
 
@@ -292,7 +293,7 @@ public class AvatarLoader {
     }
 
     private AvatarLoader setImage(final Drawable image, final ImageView view,
-            Object tag) {
+        Object tag) {
         view.setImageDrawable(image);
         view.setTag(R.id.iv_avatar, tag);
         view.setVisibility(VISIBLE);
@@ -447,7 +448,7 @@ public class AvatarLoader {
     }
 
     private FetchAvatarTask fetchAvatarTask(final String avatarUrl,
-            final String userId, final ImageView view) {
+        final String userId, final ImageView view) {
         return new FetchAvatarTask(context) {
 
             @Override

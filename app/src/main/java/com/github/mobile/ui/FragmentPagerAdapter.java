@@ -15,44 +15,43 @@
  */
 package com.github.mobile.ui;
 
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.ViewGroup;
-
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
  * Pager adapter that provides the current fragment
  */
 public abstract class FragmentPagerAdapter extends
-        android.support.v4.app.FragmentPagerAdapter implements FragmentProvider {
+    android.support.v4.app.FragmentPagerAdapter implements FragmentProvider {
 
-    private final SherlockFragmentActivity activity;
+    private final ActionBarActivity activity;
 
-    private SherlockFragment selected;
+    private Fragment selected;
 
     /**
      * @param activity
      */
-    public FragmentPagerAdapter(SherlockFragmentActivity activity) {
+    public FragmentPagerAdapter(ActionBarActivity activity) {
         super(activity.getSupportFragmentManager());
 
         this.activity = activity;
     }
 
     @Override
-    public SherlockFragment getSelected() {
+    public Fragment getSelected() {
         return selected;
     }
 
     @Override
     public void setPrimaryItem(final ViewGroup container, final int position,
-            final Object object) {
+        final Object object) {
         super.setPrimaryItem(container, position, object);
 
         boolean changed = false;
-        if (object instanceof SherlockFragment) {
+        if (object instanceof Fragment) {
             changed = object != selected;
-            selected = (SherlockFragment) object;
+            selected = (Fragment) object;
         } else {
             changed = object != null;
             selected = null;

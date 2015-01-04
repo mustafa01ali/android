@@ -19,10 +19,10 @@ import static com.github.mobile.RequestCodes.GIST_CREATE;
 import static com.github.mobile.RequestCodes.GIST_VIEW;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.core.gist.GistStore;
@@ -61,7 +61,7 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         startActivityForResult(GistsViewActivity.createIntent(items, position),
-                GIST_VIEW);
+            GIST_VIEW);
     }
 
     @Override
@@ -76,12 +76,12 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
         if (!isUsable())
             return false;
         switch (item.getItemId()) {
-        case R.id.m_create:
-            startActivityForResult(new Intent(getActivity(),
+            case R.id.m_create:
+                startActivityForResult(new Intent(getActivity(),
                     CreateGistActivity.class), GIST_CREATE);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

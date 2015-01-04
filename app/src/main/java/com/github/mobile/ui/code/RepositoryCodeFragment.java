@@ -22,6 +22,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -31,9 +34,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
 import com.github.mobile.core.code.FullTree;
@@ -63,7 +63,7 @@ import org.eclipse.egit.github.core.service.DataService;
  * Fragment to display a repository's source code tree
  */
 public class RepositoryCodeFragment extends DialogFragment implements
-        OnItemClickListener {
+    OnItemClickListener {
 
     private FullTree tree;
 
@@ -119,14 +119,14 @@ public class RepositoryCodeFragment extends DialogFragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_refresh:
-            if (tree != null)
-                refreshTree(new Reference().setRef(tree.reference.getRef()));
-            else
-                refreshTree(null);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_refresh:
+                if (tree != null)
+                    refreshTree(new Reference().setRef(tree.reference.getRef()));
+                else
+                    refreshTree(null);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -157,7 +157,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
                     Folder refreshed = fullTree.root;
                     while (!stack.isEmpty()) {
                         refreshed = refreshed.folders
-                                .get(stack.removeFirst().name);
+                            .get(stack.removeFirst().name);
                         if (refreshed == null)
                             break;
                     }
@@ -185,7 +185,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
         if (dialog == null)
             dialog = new RefDialog((DialogFragmentActivity) getActivity(),
-                    REF_UPDATE, repository, service);
+                REF_UPDATE, repository, service);
         dialog.show(tree.reference);
     }
 
@@ -195,15 +195,15 @@ public class RepositoryCodeFragment extends DialogFragment implements
             return;
 
         switch (requestCode) {
-        case REF_UPDATE:
-            refreshTree(RefDialogFragment.getSelected(arguments));
-            break;
+            case REF_UPDATE:
+                refreshTree(RefDialogFragment.getSelected(arguments));
+                break;
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+        Bundle savedInstanceState) {
         return inflater.inflate(R.layout.repo_code, null);
     }
 
@@ -217,7 +217,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
         Activity activity = getActivity();
         adapter = new HeaderFooterListAdapter<CodeTreeAdapter>(listView,
-                new CodeTreeAdapter(activity));
+            new CodeTreeAdapter(activity));
 
         branchFooterView = finder.find(R.id.rl_branch);
         branchView = finder.find(R.id.tv_branch);
@@ -231,14 +231,14 @@ public class RepositoryCodeFragment extends DialogFragment implements
         });
 
         pathHeaderView = activity.getLayoutInflater().inflate(R.layout.path_item,
-                null);
+            null);
         pathView = (TextView) pathHeaderView.findViewById(R.id.tv_path);
         pathView.setMovementMethod(LinkMovementMethod.getInstance());
         if (pathShowing)
             adapter.addHeader(pathHeaderView);
 
         TypefaceUtils.setOcticons(branchIconView,
-                (TextView) pathHeaderView.findViewById(R.id.tv_folder_icon));
+            (TextView) pathHeaderView.findViewById(R.id.tv_folder_icon));
         listView.setAdapter(adapter);
     }
 
@@ -306,7 +306,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
-            long id) {
+        long id) {
         Entry entry = (Entry) parent.getItemAtPosition(position);
         if (tree == null || entry == null)
             return;
@@ -315,6 +315,6 @@ public class RepositoryCodeFragment extends DialogFragment implements
             setFolder(tree, (Folder) entry);
         else
             startActivity(BranchFileViewActivity.createIntent(repository,
-                    tree.branch, entry.entry.getPath(), entry.entry.getSha()));
+                tree.branch, entry.entry.getPath(), entry.entry.getSha()));
     }
 }

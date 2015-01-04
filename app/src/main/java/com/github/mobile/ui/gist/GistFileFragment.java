@@ -24,13 +24,13 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R;
 import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.gist.GistStore;
@@ -50,7 +50,7 @@ import org.eclipse.egit.github.core.GistFile;
  * Fragment to display the content of a file in a Gist
  */
 public class GistFileFragment extends DialogFragment implements
-        OnSharedPreferenceChangeListener {
+    OnSharedPreferenceChangeListener {
 
     private WebView webView;
 
@@ -119,19 +119,19 @@ public class GistFileFragment extends DialogFragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_wrap:
-            if (editor.getWrap()) {
-                item.setTitle(R.string.enable_wrapping);
-                editor.setWrap(false);
-            } else {
-                item.setTitle(R.string.disable_wrapping);
-                editor.setWrap(true);
-            }
-            PreferenceUtils.save(codePrefs.edit().putBoolean(WRAP,
+            case R.id.m_wrap:
+                if (editor.getWrap()) {
+                    item.setTitle(R.string.enable_wrapping);
+                    editor.setWrap(false);
+                } else {
+                    item.setTitle(R.string.disable_wrapping);
+                    editor.setWrap(true);
+                }
+                PreferenceUtils.save(codePrefs.edit().putBoolean(WRAP,
                     editor.getWrap()));
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -179,7 +179,7 @@ public class GistFileFragment extends DialogFragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+        Bundle savedInstanceState) {
         return inflater.inflate(R.layout.gist_file_view, null);
     }
 
@@ -191,7 +191,7 @@ public class GistFileFragment extends DialogFragment implements
 
         editor = new SourceEditor(webView);
         editor.setWrap(PreferenceUtils.getCodePreferences(getActivity())
-                .getBoolean(WRAP, false));
+            .getBoolean(WRAP, false));
 
         if (file.getContent() != null)
             showSource();
@@ -201,7 +201,7 @@ public class GistFileFragment extends DialogFragment implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-            String key) {
+        String key) {
         if (WRAP.equals(key)) {
             updateWrapItem();
             editor.setWrap(sharedPreferences.getBoolean(WRAP, false));

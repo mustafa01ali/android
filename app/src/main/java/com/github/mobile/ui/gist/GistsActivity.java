@@ -22,10 +22,10 @@ import static com.github.mobile.util.TypefaceUtils.ICON_STAR;
 import static com.github.mobile.util.TypefaceUtils.ICON_TEAM;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R;
 import com.github.mobile.ui.TabPagerActivity;
 import com.github.mobile.ui.user.HomeActivity;
@@ -53,7 +53,7 @@ public class GistsActivity extends TabPagerActivity<GistQueriesPagerAdapter> {
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        getSupportMenuInflater().inflate(R.menu.gists, optionsMenu);
+        getMenuInflater().inflate(R.menu.gists, optionsMenu);
 
         return super.onCreateOptionsMenu(optionsMenu);
     }
@@ -61,16 +61,16 @@ public class GistsActivity extends TabPagerActivity<GistQueriesPagerAdapter> {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_random:
-            randomGist();
-            return true;
-        case android.R.id.home:
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_random:
+                randomGist();
+                return true;
+            case android.R.id.home:
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -82,14 +82,14 @@ public class GistsActivity extends TabPagerActivity<GistQueriesPagerAdapter> {
     @Override
     protected String getIcon(int position) {
         switch (position) {
-        case 0:
-            return ICON_PERSON;
-        case 1:
-            return ICON_STAR;
-        case 2:
-            return ICON_TEAM;
-        default:
-            return super.getIcon(position);
+            case 0:
+                return ICON_PERSON;
+            case 1:
+                return ICON_STAR;
+            case 2:
+                return ICON_TEAM;
+            default:
+                return super.getIcon(position);
         }
     }
 }

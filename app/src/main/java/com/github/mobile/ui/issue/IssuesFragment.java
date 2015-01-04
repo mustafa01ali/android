@@ -27,14 +27,14 @@ import static com.github.mobile.RequestCodes.ISSUE_VIEW;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.RequestFuture;
@@ -113,15 +113,15 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         filterHeader = getLayoutInflater(savedInstanceState).inflate(
-                R.layout.issues_filter_header, null);
+            R.layout.issues_filter_header, null);
         state = (TextView) filterHeader.findViewById(R.id.tv_filter_state);
         labels = (TextView) filterHeader.findViewById(R.id.tv_filter_labels);
         milestone = (TextView) filterHeader
-                .findViewById(R.id.tv_filter_milestone);
+            .findViewById(R.id.tv_filter_milestone);
         assigneeArea = filterHeader.findViewById(R.id.ll_assignee);
         assignee = (TextView) filterHeader.findViewById(R.id.tv_filter_assignee);
         assigneeAvatar = (ImageView) filterHeader
-                .findViewById(R.id.iv_assignee_avatar);
+            .findViewById(R.id.iv_assignee_avatar);
         updateFilterSummary();
 
         super.onViewCreated(view, savedInstanceState);
@@ -174,12 +174,12 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     public void onListItemClick(ListView l, View v, int position, long id) {
         if (position == 0)
             startActivityForResult(
-                    EditIssuesFilterActivity.createIntent(filter),
-                    ISSUE_FILTER_EDIT);
+                EditIssuesFilterActivity.createIntent(filter),
+                ISSUE_FILTER_EDIT);
         else
             startActivityForResult(
-                    IssuesViewActivity.createIntent(items, repository, position
-                            - getListAdapter().getHeadersCount()), ISSUE_VIEW);
+                IssuesViewActivity.createIntent(items, repository, position
+                    - getListAdapter().getHeadersCount()), ISSUE_VIEW);
     }
 
     @Override
@@ -192,39 +192,39 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         if (!isUsable())
             return false;
         switch (item.getItemId()) {
-        case R.id.create_issue:
-            startActivityForResult(EditIssueActivity.createIntent(repository),
+            case R.id.create_issue:
+                startActivityForResult(EditIssueActivity.createIntent(repository),
                     ISSUE_CREATE);
-            return true;
-        case R.id.m_filter:
-            startActivityForResult(
+                return true;
+            case R.id.m_filter:
+                startActivityForResult(
                     EditIssuesFilterActivity.createIntent(filter),
                     ISSUE_FILTER_EDIT);
-            return true;
-        case R.id.m_bookmark:
-            cache.addIssueFilter(filter, new RequestFuture<IssueFilter>() {
+                return true;
+            case R.id.m_bookmark:
+                cache.addIssueFilter(filter, new RequestFuture<IssueFilter>() {
 
-                public void success(IssueFilter response) {
-                    ToastUtils.show(getActivity(), R.string.message_filter_saved);
-                }
-            });
-            return true;
-        case R.id.m_search:
-            Bundle args = new Bundle();
-            args.putSerializable(EXTRA_REPOSITORY, repository);
-            getActivity().startSearch(null, false, args, false);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+                    public void success(IssueFilter response) {
+                        ToastUtils.show(getActivity(), R.string.message_filter_saved);
+                    }
+                });
+                return true;
+            case R.id.m_search:
+                Bundle args = new Bundle();
+                args.putSerializable(EXTRA_REPOSITORY, repository);
+                getActivity().startSearch(null, false, args, false);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == ISSUE_FILTER_EDIT
-                && data != null) {
+            && data != null) {
             IssueFilter newFilter = (IssueFilter) data
-                    .getSerializableExtra(EXTRA_ISSUE_FILTER);
+                .getSerializableExtra(EXTRA_ISSUE_FILTER);
             if (!filter.equals(newFilter)) {
                 filter = newFilter;
                 updateFilterSummary();
@@ -244,8 +244,8 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
             Issue created = (Issue) data.getSerializableExtra(EXTRA_ISSUE);
             forceRefresh();
             startActivityForResult(
-                    IssuesViewActivity.createIntent(created, repository),
-                    ISSUE_VIEW);
+                IssuesViewActivity.createIntent(created, repository),
+                ISSUE_VIEW);
             return;
         }
 
@@ -259,7 +259,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
             @Override
             public PageIterator<Issue> createIterator(int page, int size) {
                 return service.pageIssues(repository, filter.toFilterMap(),
-                        page, size);
+                    page, size);
             }
         };
     }
@@ -277,7 +277,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     @Override
     protected SingleTypeAdapter<Issue> createAdapter(List<Issue> items) {
         return new RepositoryIssueListAdapter(
-                getActivity().getLayoutInflater(),
-                items.toArray(new Issue[items.size()]), avatars);
+            getActivity().getLayoutInflater(),
+            items.toArray(new Issue[items.size()]), avatars);
     }
 }

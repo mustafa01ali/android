@@ -27,8 +27,11 @@ import static com.github.mobile.RequestCodes.ISSUE_MILESTONE_UPDATE;
 import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -36,9 +39,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R;
 import com.github.mobile.accounts.AccountUtils;
@@ -75,7 +75,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
      */
     public static Intent createIntent(Repository repository) {
         return createIntent(null, repository.getOwner().getLogin(),
-                repository.getName(), repository.getOwner());
+            repository.getName(), repository.getOwner());
     }
 
     /**
@@ -88,8 +88,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
      * @return intent
      */
     public static Intent createIntent(final Issue issue,
-            final String repositoryOwner, final String repositoryName,
-            final User user) {
+        final String repositoryOwner, final String repositoryName,
+        final User user) {
         Builder builder = new Builder("repo.issues.edit.VIEW");
         if (user != null)
             builder.add(EXTRA_USER, user);
@@ -167,17 +167,17 @@ public class EditIssueActivity extends DialogFragmentActivity {
             issue = new Issue();
 
         repository = RepositoryId.create(
-                intent.getStringExtra(EXTRA_REPOSITORY_OWNER),
-                intent.getStringExtra(EXTRA_REPOSITORY_NAME));
+            intent.getStringExtra(EXTRA_REPOSITORY_OWNER),
+            intent.getStringExtra(EXTRA_REPOSITORY_NAME));
 
         ActionBar actionBar = getSupportActionBar();
         if (issue.getNumber() > 0)
             if (IssueUtils.isPullRequest(issue))
                 actionBar.setTitle(getString(R.string.pull_request_title)
-                        + issue.getNumber());
+                    + issue.getNumber());
             else
                 actionBar.setTitle(getString(R.string.issue_title)
-                        + issue.getNumber());
+                    + issue.getNumber());
         else
             actionBar.setTitle(R.string.new_issue);
         actionBar.setSubtitle(repository.generateId());
@@ -202,22 +202,22 @@ public class EditIssueActivity extends DialogFragmentActivity {
             return;
 
         switch (requestCode) {
-        case ISSUE_MILESTONE_UPDATE:
-            issue.setMilestone(MilestoneDialogFragment.getSelected(arguments));
-            updateMilestone();
-            break;
-        case ISSUE_ASSIGNEE_UPDATE:
-            User assignee = AssigneeDialogFragment.getSelected(arguments);
-            if (assignee != null)
-                issue.setAssignee(assignee);
-            else
-                issue.setAssignee(new User().setLogin(""));
-            updateAssignee();
-            break;
-        case ISSUE_LABELS_UPDATE:
-            issue.setLabels(LabelsDialogFragment.getSelected(arguments));
-            updateLabels();
-            break;
+            case ISSUE_MILESTONE_UPDATE:
+                issue.setMilestone(MilestoneDialogFragment.getSelected(arguments));
+                updateMilestone();
+                break;
+            case ISSUE_ASSIGNEE_UPDATE:
+                User assignee = AssigneeDialogFragment.getSelected(arguments);
+                if (assignee != null)
+                    issue.setAssignee(assignee);
+                else
+                    issue.setAssignee(new User().setLogin(""));
+                updateAssignee();
+                break;
+            case ISSUE_LABELS_UPDATE:
+                issue.setLabels(LabelsDialogFragment.getSelected(arguments));
+                updateLabels();
+                break;
         }
     }
 
@@ -240,8 +240,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
             public void onClick(View v) {
                 if (milestoneDialog == null)
                     milestoneDialog = new MilestoneDialog(
-                            EditIssueActivity.this, ISSUE_MILESTONE_UPDATE,
-                            repository, milestoneService);
+                        EditIssueActivity.this, ISSUE_MILESTONE_UPDATE,
+                        repository, milestoneService);
                 milestoneDialog.show(issue.getMilestone());
             }
         });
@@ -252,8 +252,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
             public void onClick(View v) {
                 if (assigneeDialog == null)
                     assigneeDialog = new AssigneeDialog(EditIssueActivity.this,
-                            ISSUE_ASSIGNEE_UPDATE, repository,
-                            collaboratorService);
+                        ISSUE_ASSIGNEE_UPDATE, repository,
+                        collaboratorService);
                 assigneeDialog.show(issue.getAssignee());
             }
         });
@@ -264,7 +264,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
             public void onClick(View v) {
                 if (labelsDialog == null)
                     labelsDialog = new LabelsDialog(EditIssueActivity.this,
-                            ISSUE_LABELS_UPDATE, repository, labelService);
+                        ISSUE_LABELS_UPDATE, repository, labelService);
                 labelsDialog.show(issue.getLabels());
             }
         });
@@ -282,7 +282,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
             float total = closed + milestone.getOpenIssues();
             if (total > 0) {
                 ((LayoutParams) milestoneClosed.getLayoutParams()).weight = closed
-                        / total;
+                    / total;
                 milestoneClosed.setVisibility(VISIBLE);
             } else
                 milestoneClosed.setVisibility(GONE);
@@ -333,7 +333,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getSupportMenuInflater().inflate(R.menu.issue_edit, options);
+        getMenuInflater().inflate(R.menu.issue_edit, options);
         saveItem = options.findItem(R.id.m_apply);
         updateSaveMenu();
         return true;
@@ -342,40 +342,40 @@ public class EditIssueActivity extends DialogFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_apply:
-            issue.setTitle(titleText.getText().toString());
-            issue.setBody(bodyText.getText().toString());
-            if (issue.getNumber() > 0)
-                new EditIssueTask(this, repository, issue) {
+            case R.id.m_apply:
+                issue.setTitle(titleText.getText().toString());
+                issue.setBody(bodyText.getText().toString());
+                if (issue.getNumber() > 0)
+                    new EditIssueTask(this, repository, issue) {
 
-                    @Override
-                    protected void onSuccess(Issue editedIssue)
+                        @Override
+                        protected void onSuccess(Issue editedIssue)
                             throws Exception {
-                        super.onSuccess(editedIssue);
+                            super.onSuccess(editedIssue);
 
-                        Intent intent = new Intent();
-                        intent.putExtra(EXTRA_ISSUE, editedIssue);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-                }.edit();
-            else
-                new CreateIssueTask(this, repository, issue) {
+                            Intent intent = new Intent();
+                            intent.putExtra(EXTRA_ISSUE, editedIssue);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
+                    }.edit();
+                else
+                    new CreateIssueTask(this, repository, issue) {
 
-                    @Override
-                    protected void onSuccess(Issue created) throws Exception {
-                        super.onSuccess(created);
+                        @Override
+                        protected void onSuccess(Issue created) throws Exception {
+                            super.onSuccess(created);
 
-                        Intent intent = new Intent();
-                        intent.putExtra(EXTRA_ISSUE, created);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
+                            Intent intent = new Intent();
+                            intent.putExtra(EXTRA_ISSUE, created);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
 
-                }.create();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+                    }.create();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -385,7 +385,7 @@ public class EditIssueActivity extends DialogFragmentActivity {
             @Override
             public Boolean run(Account account) throws Exception {
                 return collaboratorService.isCollaborator(
-                        repository, AccountUtils.getLogin(EditIssueActivity.this));
+                    repository, AccountUtils.getLogin(EditIssueActivity.this));
             }
 
             @Override

@@ -17,8 +17,8 @@ package com.github.mobile.ui.search;
 
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.R;
 import com.github.mobile.ui.FragmentPagerAdapter;
 
@@ -34,7 +34,7 @@ public class SearchPagerAdapter extends FragmentPagerAdapter {
      *
      * @param activity
      */
-    public SearchPagerAdapter(SherlockFragmentActivity activity) {
+    public SearchPagerAdapter(ActionBarActivity activity) {
         super(activity);
 
         resources = activity.getResources();
@@ -43,24 +43,24 @@ public class SearchPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-        case 0:
-            return resources.getString(R.string.tab_repositories);
-        case 1:
-            return resources.getString(R.string.tab_users);
-        default:
-            return null;
+            case 0:
+                return resources.getString(R.string.tab_repositories);
+            case 1:
+                return resources.getString(R.string.tab_users);
+            default:
+                return null;
         }
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-        case 0:
-            return new SearchRepositoryListFragment();
-        case 1:
-            return new SearchUserListFragment();
-        default:
-            return null;
+            case 0:
+                return new SearchRepositoryListFragment();
+            case 1:
+                return new SearchUserListFragment();
+            default:
+                return null;
         }
     }
 

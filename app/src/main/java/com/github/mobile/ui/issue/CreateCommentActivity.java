@@ -21,8 +21,8 @@ import static com.github.mobile.Intents.EXTRA_REPOSITORY_OWNER;
 import static com.github.mobile.Intents.EXTRA_USER;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R;
 import com.github.mobile.ui.comment.CommentPreviewPagerAdapter;
@@ -36,7 +36,7 @@ import org.eclipse.egit.github.core.User;
  * Activity to create a comment on an {@link Issue}
  */
 public class CreateCommentActivity extends
-        com.github.mobile.ui.comment.CreateCommentActivity {
+    com.github.mobile.ui.comment.CreateCommentActivity {
 
     /**
      * Create intent to create a comment
@@ -47,7 +47,7 @@ public class CreateCommentActivity extends
      * @return intent
      */
     public static Intent createIntent(RepositoryId repoId, int issueNumber,
-            User user) {
+        User user) {
         Builder builder = new Builder("issue.comment.create.VIEW");
         builder.repo(repoId);
         builder.add(EXTRA_ISSUE_NUMBER, issueNumber);
@@ -63,7 +63,7 @@ public class CreateCommentActivity extends
     protected void onCreate(Bundle savedInstanceState) {
         issueNumber = getIntExtra(EXTRA_ISSUE_NUMBER);
         repositoryId = new RepositoryId(getStringExtra(EXTRA_REPOSITORY_OWNER),
-                getStringExtra(EXTRA_REPOSITORY_NAME));
+            getStringExtra(EXTRA_REPOSITORY_NAME));
 
         super.onCreate(savedInstanceState);
 

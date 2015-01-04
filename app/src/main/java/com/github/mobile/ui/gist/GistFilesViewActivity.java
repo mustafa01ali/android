@@ -21,10 +21,10 @@ import static com.github.mobile.Intents.EXTRA_GIST_ID;
 import static com.github.mobile.Intents.EXTRA_POSITION;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R;
@@ -56,7 +56,7 @@ public class GistFilesViewActivity extends PagerActivity {
      */
     public static Intent createIntent(Gist gist, int position) {
         return new Builder("gist.files.VIEW").gist(gist.getId())
-                .add(EXTRA_POSITION, position).toIntent();
+            .add(EXTRA_POSITION, position).toIntent();
     }
 
     private String gistId;
@@ -148,16 +148,16 @@ public class GistFilesViewActivity extends PagerActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            if (gist != null) {
-                Intent intent = GistsViewActivity.createIntent(gist);
-                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP
+            case android.R.id.home:
+                if (gist != null) {
+                    Intent intent = GistsViewActivity.createIntent(gist);
+                    intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP
                         | FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-            }
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+                    startActivity(intent);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

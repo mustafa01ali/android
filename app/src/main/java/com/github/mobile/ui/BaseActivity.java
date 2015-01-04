@@ -16,16 +16,16 @@
 package com.github.mobile.ui;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 
 import com.github.kevinsawicki.wishlist.ViewFinder;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 import java.io.Serializable;
 
 /**
  * Base sherlock activity
  */
-public class BaseActivity extends RoboSherlockFragmentActivity {
+public class BaseActivity extends ActionBarActivity {
 
     /**
      * Finder bound to this activity's view

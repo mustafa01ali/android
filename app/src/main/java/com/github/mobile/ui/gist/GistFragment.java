@@ -30,6 +30,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -38,9 +41,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
 import com.github.mobile.accounts.AccountUtils;
@@ -129,18 +129,18 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+        Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.comment_list, null);
 
         headerView = inflater.inflate(R.layout.gist_header, null);
         created = (TextView) headerView.findViewById(R.id.tv_gist_creation);
         updated = (TextView) headerView.findViewById(R.id.tv_gist_updated);
         description = (TextView) headerView
-                .findViewById(R.id.tv_gist_description);
+            .findViewById(R.id.tv_gist_description);
 
         loadingView = inflater.inflate(R.layout.loading_item, null);
         ((TextView) loadingView.findViewById(R.id.tv_loading))
-                .setText(R.string.loading_comments);
+            .setText(R.string.loading_comments);
 
         footerView = inflater.inflate(R.layout.footer_separator, null);
 
@@ -156,8 +156,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
         Activity activity = getActivity();
         adapter = new HeaderFooterListAdapter<CommentListAdapter>(list,
-                new CommentListAdapter(activity.getLayoutInflater(), null, avatars,
-                        imageGetter, editCommentListener, deleteCommentListener));
+            new CommentListAdapter(activity.getLayoutInflater(), null, avatars,
+                imageGetter, editCommentListener, deleteCommentListener));
         list.setAdapter(adapter);
     }
 
@@ -254,24 +254,24 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             return super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
-        case R.id.m_comment:
-            startActivityForResult(CreateCommentActivity.createIntent(gist),
+            case R.id.m_comment:
+                startActivityForResult(CreateCommentActivity.createIntent(gist),
                     COMMENT_CREATE);
-            return true;
-        case R.id.m_star:
-            if (starred)
-                unstarGist();
-            else
-                starGist();
-            return true;
-        case R.id.m_refresh:
-            refreshGist();
-            return true;
-        case R.id.m_share:
-            shareGist();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+                return true;
+            case R.id.m_star:
+                if (starred)
+                    unstarGist();
+                else
+                    starGist();
+                return true;
+            case R.id.m_refresh:
+                refreshGist();
+                return true;
+            case R.id.m_share:
+                shareGist();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -305,7 +305,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         if (user != null && !TextUtils.isEmpty(user.getLogin()))
             subject.append(" by ").append(user.getLogin());
         startActivity(ShareUtils.create(subject, "https://gist.github.com/"
-                + id));
+            + id));
     }
 
     private void unstarGist() {
@@ -335,32 +335,32 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             return;
 
         switch (requestCode) {
-        case COMMENT_CREATE:
-            Comment comment = (Comment) data
+            case COMMENT_CREATE:
+                Comment comment = (Comment) data
                     .getSerializableExtra(EXTRA_COMMENT);
-            if (comments != null) {
-                comments.add(comment);
-                gist.setComments(gist.getComments() + 1);
-                updateList(gist, comments);
-            } else
-                refreshGist();
-            return;
-        case COMMENT_EDIT:
-            comment = (Comment) data.getSerializableExtra(EXTRA_COMMENT);
-            if (comments != null && comment != null) {
-                int position = Collections.binarySearch(comments, comment,
+                if (comments != null) {
+                    comments.add(comment);
+                    gist.setComments(gist.getComments() + 1);
+                    updateList(gist, comments);
+                } else
+                    refreshGist();
+                return;
+            case COMMENT_EDIT:
+                comment = (Comment) data.getSerializableExtra(EXTRA_COMMENT);
+                if (comments != null && comment != null) {
+                    int position = Collections.binarySearch(comments, comment,
                         new Comparator<Comment>() {
                             public int compare(Comment lhs, Comment rhs) {
                                 return Long.valueOf(lhs.getId()).compareTo(
-                                        rhs.getId());
+                                    rhs.getId());
                             }
                         });
-                imageGetter.removeFromCache(comment.getId());
-                comments.set(position, comment);
-                updateList(gist, comments);
-            } else
-                refreshGist();
-            return;
+                    imageGetter.removeFromCache(comment.getId());
+                    comments.set(position, comment);
+                    updateList(gist, comments);
+                } else
+                    refreshGist();
+                return;
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -384,9 +384,9 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
         for (GistFile file : files.values()) {
             View fileView = inflater.inflate(R.layout.gist_file_item, null);
             ((TextView) fileView.findViewById(R.id.tv_file)).setText(file
-                    .getFilename());
+                .getFilename());
             ((TextView) fileView.findViewById(R.id.tv_file_icon))
-                    .setTypeface(octicons);
+                .setTypeface(octicons);
             adapter.addHeader(fileView, file, true);
             fileHeaders.add(fileView);
         }
@@ -394,7 +394,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private void updateList(Gist gist, List<Comment> comments) {
         adapter.getWrappedAdapter().setItems(
-                comments.toArray(new Comment[comments.size()]));
+            comments.toArray(new Comment[comments.size()]));
         adapter.removeHeader(loadingView);
 
         headerView.setVisibility(VISIBLE);
@@ -423,7 +423,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 FragmentActivity activity = getActivity();
                 if (activity instanceof OnLoadListener)
                     ((OnLoadListener<Gist>) activity)
-                            .loaded(fullGist.getGist());
+                        .loaded(fullGist.getGist());
 
                 starred = fullGist.isStarred();
                 loadFinished = true;
@@ -437,11 +437,11 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
-            long id) {
+        long id) {
         Object item = parent.getItemAtPosition(position);
         if (item instanceof GistFile)
             startActivity(GistFilesViewActivity
-                    .createIntent(gist, position - 1));
+                .createIntent(gist, position - 1));
     }
 
     @Override
@@ -450,30 +450,30 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             return;
 
         switch (requestCode) {
-        case COMMENT_DELETE:
-            final Comment comment = (Comment) arguments
+            case COMMENT_DELETE:
+                final Comment comment = (Comment) arguments
                     .getSerializable(EXTRA_COMMENT);
-            new DeleteCommentTask(getActivity(), gist.getId(), comment) {
-                @Override
-                protected void onSuccess(Comment comment) throws Exception {
-                    super.onSuccess(comment);
+                new DeleteCommentTask(getActivity(), gist.getId(), comment) {
+                    @Override
+                    protected void onSuccess(Comment comment) throws Exception {
+                        super.onSuccess(comment);
 
-                    // Update comment list
-                    if (comments != null && comment != null) {
-                        int position = Collections.binarySearch(comments,
+                        // Update comment list
+                        if (comments != null && comment != null) {
+                            int position = Collections.binarySearch(comments,
                                 comment, new Comparator<Comment>() {
                                     public int compare(Comment lhs, Comment rhs) {
                                         return Long.valueOf(lhs.getId())
-                                                .compareTo(rhs.getId());
+                                            .compareTo(rhs.getId());
                                     }
                                 });
-                        comments.remove(position);
-                        updateList(gist, comments);
-                    } else
-                        refreshGist();
-                }
-            }.start();
-            break;
+                            comments.remove(position);
+                            updateList(gist, comments);
+                        } else
+                            refreshGist();
+                    }
+                }.start();
+                break;
         }
     }
 
@@ -483,8 +483,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     final EditCommentListener editCommentListener = new EditCommentListener() {
         public void onEditComment(Comment comment) {
             startActivityForResult(
-                    EditCommentActivity.createIntent(gist, comment),
-                    COMMENT_EDIT);
+                EditCommentActivity.createIntent(gist, comment),
+                COMMENT_EDIT);
         }
     };
 
@@ -496,12 +496,12 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             Bundle args = new Bundle();
             args.putSerializable(EXTRA_COMMENT, comment);
             ConfirmDialogFragment.show(
-                    (DialogFragmentActivity) getActivity(),
-                    COMMENT_DELETE,
-                    getActivity()
-                            .getString(R.string.confirm_comment_delete_title),
-                    getActivity().getString(
-                            R.string.confirm_comment_delete_message), args);
+                (DialogFragmentActivity) getActivity(),
+                COMMENT_DELETE,
+                getActivity()
+                    .getString(R.string.confirm_comment_delete_title),
+                getActivity().getString(
+                    R.string.confirm_comment_delete_message), args);
         }
     };
 }

@@ -18,8 +18,8 @@ package com.github.mobile.ui.gist;
 import static com.github.mobile.Intents.EXTRA_GIST;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.github.mobile.Intents.Builder;
 import com.github.mobile.R;
 
@@ -31,7 +31,7 @@ import org.eclipse.egit.github.core.User;
  * Activity to create a comment on a {@link Gist}
  */
 public class CreateCommentActivity extends
-        com.github.mobile.ui.comment.CreateCommentActivity {
+    com.github.mobile.ui.comment.CreateCommentActivity {
 
     /**
      * Create intent to create a comment

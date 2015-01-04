@@ -21,17 +21,17 @@ import static android.content.Intent.ACTION_SEARCH;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.github.mobile.R;
 import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.ToastUtils;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
 import org.eclipse.egit.github.core.Repository;
@@ -39,7 +39,7 @@ import org.eclipse.egit.github.core.Repository;
 /**
  * Activity to search issues
  */
-public class IssueSearchActivity extends RoboSherlockFragmentActivity {
+public class IssueSearchActivity extends ActionBarActivity {
 
     @Inject
     private AvatarLoader avatars;
@@ -50,27 +50,27 @@ public class IssueSearchActivity extends RoboSherlockFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu options) {
-        getSupportMenuInflater().inflate(R.menu.search, options);
+        getMenuInflater().inflate(R.menu.search, options);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_search:
-            onSearchRequested();
-            return true;
-        case R.id.m_clear:
-            IssueSearchSuggestionsProvider.clear(this);
-            ToastUtils.show(this, R.string.search_history_cleared);
-            return true;
-        case android.R.id.home:
-            Intent intent = RepositoryViewActivity.createIntent(repository);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_search:
+                onSearchRequested();
+                return true;
+            case R.id.m_clear:
+                IssueSearchSuggestionsProvider.clear(this);
+                ToastUtils.show(this, R.string.search_history_cleared);
+                return true;
+            case android.R.id.home:
+                Intent intent = RepositoryViewActivity.createIntent(repository);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -80,7 +80,7 @@ public class IssueSearchActivity extends RoboSherlockFragmentActivity {
 
         setContentView(R.layout.issue_search);
 
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         Bundle appData = getIntent().getBundleExtra(APP_DATA);
         if (appData != null) {
             repository = (Repository) appData.getSerializable(EXTRA_REPOSITORY);
@@ -92,7 +92,7 @@ public class IssueSearchActivity extends RoboSherlockFragmentActivity {
         avatars.bind(actionBar, repository.getOwner());
 
         issueFragment = (SearchIssueListFragment) getSupportFragmentManager()
-                .findFragmentById(android.R.id.list);
+            .findFragmentById(android.R.id.list);
 
         handleIntent(getIntent());
     }

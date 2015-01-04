@@ -17,17 +17,17 @@ package com.github.mobile.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.github.kevinsawicki.wishlist.ViewFinder;
-import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 
 import java.io.Serializable;
 
 /**
  * Base fragment capable of receiving dialog callbacks
  */
-public abstract class DialogFragment extends RoboSherlockFragment implements
+public abstract class DialogFragment extends Fragment implements
         DialogResultListener {
 
     /**

@@ -17,8 +17,8 @@ package com.github.mobile.ui.user;
 
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.github.mobile.R;
 import com.github.mobile.ui.FragmentPagerAdapter;
 import com.github.mobile.ui.repo.UserRepositoryListFragment;
@@ -33,7 +33,7 @@ public class UserPagerAdapter extends FragmentPagerAdapter {
     /**
      * @param activity
      */
-    public UserPagerAdapter(final SherlockFragmentActivity activity) {
+    public UserPagerAdapter(final ActionBarActivity activity) {
         super(activity);
 
         resources = activity.getResources();
@@ -42,16 +42,16 @@ public class UserPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(final int position) {
         switch (position) {
-        case 0:
-            return new UserCreatedNewsFragment();
-        case 1:
-            return new UserRepositoryListFragment();
-        case 2:
-            return new UserFollowersFragment();
-        case 3:
-            return new UserFollowingFragment();
-        default:
-            return null;
+            case 0:
+                return new UserCreatedNewsFragment();
+            case 1:
+                return new UserRepositoryListFragment();
+            case 2:
+                return new UserFollowersFragment();
+            case 3:
+                return new UserFollowingFragment();
+            default:
+                return null;
         }
     }
 
@@ -63,16 +63,16 @@ public class UserPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-        case 0:
-            return resources.getString(R.string.tab_news);
-        case 1:
-            return resources.getString(R.string.tab_repositories);
-        case 2:
-            return resources.getString(R.string.tab_followers);
-        case 3:
-            return resources.getString(R.string.tab_following);
-        default:
-            return null;
+            case 0:
+                return resources.getString(R.string.tab_news);
+            case 1:
+                return resources.getString(R.string.tab_repositories);
+            case 2:
+                return resources.getString(R.string.tab_followers);
+            case 3:
+                return resources.getString(R.string.tab_following);
+            default:
+                return null;
         }
     }
 }
