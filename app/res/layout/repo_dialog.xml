@@ -22,6 +22,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dialog_padding"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -31,7 +32,9 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dialog_padding"
+            android:paddingRight="@dimen/dialog_padding">
 
             <ImageView
                 android:id="@+id/iv_owner_avatar"
@@ -49,11 +52,6 @@
                 android:textStyle="normal" />
         </LinearLayout>
 
-        <View
-            android:id="@+id/divider"
-            style="@style/Separator"
-            android:visibility="gone" />
-
         <LinearLayout
             android:id="@+id/ll_recent_repo_area"
             style="@style/ListItem"
@@ -62,7 +60,9 @@
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:visibility="gone" >
+            android:visibility="gone"
+            android:paddingLeft="@dimen/dialog_padding"
+            android:paddingRight="@dimen/dialog_padding">
 
             <ImageView
                 android:id="@+id/iv_recent_repo_avatar"

@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.mobile.R;
@@ -35,7 +36,6 @@ import com.github.mobile.ThrowableLoader;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.HeaderFooterListAdapter;
 import com.github.mobile.ui.ItemListFragment;
-import com.github.mobile.ui.LightAlertDialog;
 import com.github.mobile.ui.user.OrganizationSelectionListener;
 import com.github.mobile.ui.user.OrganizationSelectionProvider;
 import com.github.mobile.ui.user.UserViewActivity;
@@ -157,13 +157,17 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         if (repo == null)
             return false;
 
-        final AlertDialog dialog = LightAlertDialog.create(getActivity());
-        dialog.setCanceledOnTouchOutside(true);
-
-        dialog.setTitle(repo.generateId());
+        final MaterialDialogCompat.Builder dialogBuilder = new MaterialDialogCompat.Builder(getActivity());
+        dialogBuilder.setTitle(repo.generateId());
+        dialogBuilder.setCancelable(true);
 
         View view = getActivity().getLayoutInflater().inflate(
                 R.layout.repo_dialog, null);
+
+        dialogBuilder.setView(view);
+
+        final AlertDialog dialog = dialogBuilder.create();
+
         ViewFinder finder = new ViewFinder(view);
 
         final User owner = repo.getOwner();
@@ -179,7 +183,6 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         });
 
         if ((recentRepos != null) && (recentRepos.contains(repo))) {
-            finder.find(R.id.divider).setVisibility(View.VISIBLE);
             finder.find(R.id.ll_recent_repo_area).setVisibility(View.VISIBLE);
             finder.onClick(R.id.ll_recent_repo_area, new OnClickListener() {
 
@@ -191,10 +194,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
                 }
             });
         }
-
-        dialog.setView(view);
         dialog.show();
-
         return true;
     }
 
