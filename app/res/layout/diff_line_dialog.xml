@@ -10,6 +10,8 @@
 
         <FrameLayout
             style="@style/ListItem"
+            android:paddingLeft="@dimen/dialog_padding"
+            android:paddingRight="@dimen/dialog_padding"
             android:layout_width="match_parent" >
 
             <TextView
@@ -18,13 +20,13 @@
                 android:textStyle="normal" />
         </FrameLayout>
 
-        <View style="@style/Separator" />
-
         <LinearLayout
             android:id="@+id/ll_comment_area"
             style="@style/ListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dialog_padding"
+            android:paddingRight="@dimen/dialog_padding"
             android:clickable="true"
             android:orientation="vertical" >
 
@@ -39,13 +41,13 @@
                 android:singleLine="true" />
         </LinearLayout>
 
-        <View style="@style/Separator" />
-
         <LinearLayout
             android:id="@+id/ll_view_area"
             style="@style/ListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dialog_padding"
+            android:paddingRight="@dimen/dialog_padding"
             android:clickable="true"
             android:orientation="vertical" >
 

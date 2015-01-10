@@ -16,7 +16,6 @@
 package com.github.mobile.ui.commit;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.graphics.Paint.UNDERLINE_TEXT_FLAG;
 import static com.github.mobile.Intents.EXTRA_BASE;
 import static com.github.mobile.Intents.EXTRA_COMMENT;
@@ -48,6 +47,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
@@ -58,7 +58,6 @@ import com.github.mobile.core.commit.FullCommitFile;
 import com.github.mobile.core.commit.RefreshCommitTask;
 import com.github.mobile.ui.DialogFragment;
 import com.github.mobile.ui.HeaderFooterListAdapter;
-import com.github.mobile.ui.LightAlertDialog;
 import com.github.mobile.ui.StyledText;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
@@ -422,12 +421,23 @@ public class CommitDiffListFragment extends DialogFragment implements
 
     private void showFileOptions(CharSequence line, final int position,
             final CommitFile file) {
-        final AlertDialog dialog = LightAlertDialog.create(getActivity());
-        dialog.setTitle(CommitUtils.getName(file));
-        dialog.setCanceledOnTouchOutside(true);
+        MaterialDialogCompat.Builder builder = new MaterialDialogCompat.Builder(getActivity());
+        builder.setTitle(CommitUtils.getName(file));
+        builder.setCancelable(true);
 
         View view = getActivity().getLayoutInflater().inflate(
                 R.layout.diff_line_dialog, null);
+        builder.setView(view);
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+
+        final AlertDialog dialog = builder.create();
+
         ViewFinder finder = new ViewFinder(view);
 
         TextView diff = finder.textView(R.id.tv_diff);
@@ -456,15 +466,6 @@ public class CommitDiffListFragment extends DialogFragment implements
                                         .createIntent(repository, commit.getSha(),
                                                 file.getFilename(), position),
                                 COMMENT_CREATE);
-                    }
-                });
-
-        dialog.setView(view);
-        dialog.setButton(BUTTON_NEGATIVE, getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
                     }
                 });
         dialog.show();
