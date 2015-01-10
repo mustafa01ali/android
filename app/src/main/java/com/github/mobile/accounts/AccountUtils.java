@@ -16,7 +16,6 @@
 package com.github.mobile.accounts;
 
 import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
-import static android.content.DialogInterface.BUTTON_POSITIVE;
 import static android.util.Log.DEBUG;
 import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
@@ -28,7 +27,6 @@ import android.accounts.AuthenticatorDescription;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -37,8 +35,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.github.mobile.R;
-import com.github.mobile.ui.LightAlertDialog;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -299,26 +297,23 @@ public class AccountUtils {
      * @param activity
      */
     private static void showConflictMessage(final Activity activity) {
-        AlertDialog dialog = LightAlertDialog.create(activity);
-        dialog.setTitle(activity.getString(R.string.authenticator_conflict_title));
-        dialog.setMessage(activity
-                .getString(R.string.authenticator_conflict_message));
-        dialog.setOnCancelListener(new OnCancelListener() {
+        MaterialDialogCompat.Builder builder = new MaterialDialogCompat.Builder(activity)
+            .setTitle(activity.getString(R.string.authenticator_conflict_title))
+            .setMessage(activity
+            .getString(R.string.authenticator_conflict_message))
+            .setPositiveButton(android.R.string.ok, new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    activity.finish();
+                }
+            }).setOnCancelListener(new OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    activity.finish();
+                }
+            });
 
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                activity.finish();
-            }
-        });
-        dialog.setButton(BUTTON_POSITIVE,
-                activity.getString(android.R.string.ok), new OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        activity.finish();
-                    }
-                });
-        dialog.show();
+        builder.create().show();
     }
 
     /**
