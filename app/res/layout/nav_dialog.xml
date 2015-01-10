@@ -21,7 +21,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dialog_padding">
 
         <LinearLayout
             android:id="@+id/ll_user_area"
@@ -30,7 +31,9 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dialog_padding"
+            android:paddingRight="@dimen/dialog_padding">
 
             <ImageView
                 android:id="@+id/iv_user_avatar"
@@ -48,8 +51,6 @@
                 android:textStyle="normal" />
         </LinearLayout>
 
-        <View style="@style/Separator" />
-
         <LinearLayout
             android:id="@+id/ll_repo_area"
             style="@style/ListItem"
@@ -57,7 +58,9 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dialog_padding"
+            android:paddingRight="@dimen/dialog_padding">
 
             <ImageView
                 android:id="@+id/iv_repo_avatar"

@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.mobile.R;
@@ -124,7 +125,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
         Issue issue = issueMatcher.getIssue(event);
         if (issue != null) {
             Repository repo = RepositoryEventMatcher.getRepository(
-                    event.getRepo(), event.getActor(), event.getOrg());
+                event.getRepo(), event.getActor(), event.getOrg());
             viewIssue(issue, repo);
             return;
         }
@@ -146,22 +147,27 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
 
     @Override
     public boolean onListItemLongClick(ListView l, View v, int position,
-            long itemId) {
+        long itemId) {
         if (!isUsable())
             return false;
 
         final Event event = (Event) l.getItemAtPosition(position);
         final Repository repo = RepositoryEventMatcher.getRepository(
-                event.getRepo(), event.getActor(), event.getOrg());
+            event.getRepo(), event.getActor(), event.getOrg());
         final User user = event.getActor();
 
         if (repo != null && user != null) {
-            final AlertDialog dialog = LightAlertDialog.create(getActivity());
-            dialog.setTitle(R.string.navigate_to);
-            dialog.setCanceledOnTouchOutside(true);
+            final MaterialDialogCompat.Builder dialogBuilder = new MaterialDialogCompat.Builder(getActivity());
+            dialogBuilder.setTitle(R.string.navigate_to);
+            dialogBuilder.setCancelable(true);
 
             View view = getActivity().getLayoutInflater().inflate(
-                    R.layout.nav_dialog, null);
+                R.layout.nav_dialog, null);
+
+            dialogBuilder.setView(view);
+
+            final AlertDialog dialog = dialogBuilder.create();
+
             ViewFinder finder = new ViewFinder(view);
             avatars.bind(finder.imageView(R.id.iv_user_avatar), user);
             avatars.bind(finder.imageView(R.id.iv_repo_avatar), repo.getOwner());
@@ -183,7 +189,6 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
                     viewRepository(repo);
                 }
             });
-            dialog.setView(view);
             dialog.show();
 
             return true;
@@ -194,7 +199,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
 
     private void openDownload(Event event) {
         Download download = ((DownloadPayload) event.getPayload())
-                .getDownload();
+            .getDownload();
         if (download == null)
             return;
 
@@ -209,12 +214,12 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
 
     private void openCommitComment(Event event) {
         Repository repo = RepositoryEventMatcher.getRepository(event.getRepo(),
-                event.getActor(), event.getOrg());
+            event.getActor(), event.getOrg());
         if (repo == null)
             return;
 
         CommitCommentPayload payload = (CommitCommentPayload) event
-                .getPayload();
+            .getPayload();
         CommitComment comment = payload.getComment();
         if (comment == null)
             return;
@@ -226,7 +231,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
 
     private void openPush(Event event) {
         Repository repo = RepositoryEventMatcher.getRepository(event.getRepo(),
-                event.getActor(), event.getOrg());
+            event.getActor(), event.getOrg());
         if (repo == null)
             return;
 
@@ -240,7 +245,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
             String head = payload.getHead();
             if (!TextUtils.isEmpty(base) && !TextUtils.isEmpty(head))
                 startActivity(CommitCompareViewActivity.createIntent(repo,
-                        base, head));
+                    base, head));
         } else {
             Commit commit = commits.get(0);
             String sha = commit != null ? commit.getSha() : null;
@@ -260,7 +265,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
 
     /**
      * Start an activity to view the given {@link UserPair}
-     * <p>
+     * <p/>
      * This method does nothing by default, subclasses should override
      *
      * @param users
@@ -294,7 +299,7 @@ public abstract class NewsFragment extends PagedItemFragment<Event> {
     @Override
     protected SingleTypeAdapter<Event> createAdapter(List<Event> items) {
         return new NewsListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new Event[items.size()]), avatars);
+            items.toArray(new Event[items.size()]), avatars);
     }
 
     @Override
