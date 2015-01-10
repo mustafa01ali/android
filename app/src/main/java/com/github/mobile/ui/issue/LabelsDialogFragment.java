@@ -16,11 +16,9 @@
 package com.github.mobile.ui.issue;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_NEUTRAL;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -31,11 +29,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.DialogFragmentHelper;
-import com.github.mobile.ui.LightAlertDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -145,18 +143,16 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
         view.setAdapter(adapter);
         view.setOnItemClickListener(adapter);
 
-        AlertDialog dialog = LightAlertDialog.create(activity);
-        dialog.setCancelable(true);
-        dialog.setOnCancelListener(this);
-        dialog.setButton(BUTTON_NEGATIVE, activity.getString(R.string.cancel),
-                this);
-        dialog.setButton(BUTTON_NEUTRAL, activity.getString(R.string.clear), this);
-        dialog.setButton(BUTTON_POSITIVE, activity.getString(R.string.apply),
-                this);
-        dialog.setTitle(getTitle());
-        dialog.setMessage(getMessage());
-        dialog.setView(view);
-        return dialog;
+        MaterialDialogCompat.Builder builder = new MaterialDialogCompat.Builder(getActivity())
+            .setTitle(getTitle())
+            .setMessage(getMessage())
+            .setView(view)
+            .setCancelable(true)
+            .setPositiveButton(R.string.apply, this)
+            .setNegativeButton(R.string.cancel, this)
+            .setNeutralButton(R.string.clear, this);
+
+        return builder.create();
     }
 
     @SuppressWarnings("unchecked")
