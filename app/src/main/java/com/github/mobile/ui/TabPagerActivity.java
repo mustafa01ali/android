@@ -134,6 +134,9 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
         adapter = createAdapter();
         invalidateOptionsMenu();
         pager.setAdapter(adapter);
+    }
+
+    public void updateTabs() {
         slidingTabsLayout.setViewPager(pager);
     }
 
@@ -143,6 +146,7 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
     protected void configureTabPager() {
         if (adapter == null) {
             createPager();
+            updateTabs();
         }
     }
 
@@ -151,6 +155,8 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
         super.onCreate(savedInstanceState);
 
         setContentView(getContentView());
+
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         // On Lollipop, the action bar shadow is provided by default, so have to remove it explicitly
         getSupportActionBar().setElevation(0);
