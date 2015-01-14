@@ -25,6 +25,8 @@
         android:layout_height="wrap_content"
         android:clickable="false"
         android:focusable="false"
+        android:button="@drawable/btn_radio_bg"
+        android:buttonTint="@color/dialogs_accent"
         android:focusableInTouchMode="false" />
 
     <ImageView
