@@ -78,7 +78,7 @@
 
     <color name="primary">#3D3D3D</color>
     <color name="primary_dark">#313131</color>
-    <color name="accent">#FFFFFF</color>
+    <color name="accent">#3797C7</color>
     <color name="dialogs_accent">#666666</color>
 
 </resources>

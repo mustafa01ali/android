@@ -18,7 +18,6 @@ package com.github.mobile.ui.ref;
 import static android.app.Activity.RESULT_OK;
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -28,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
 import com.github.mobile.core.ref.RefUtils;
@@ -117,22 +117,13 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
         Activity activity = getActivity();
         Bundle arguments = getArguments();
 
-        final AlertDialog dialog = createDialog();
-        dialog.setButton(BUTTON_NEGATIVE, activity.getString(R.string.cancel),
-                this);
+        MaterialDialogCompat.Builder builder = createDialog();
+        builder.setNegativeButton(R.string.cancel, this);
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
         ListView view = (ListView) inflater.inflate(R.layout.dialog_list_view,
                 null);
-        view.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                onClick(dialog, position);
-            }
-        });
 
         ArrayList<Reference> choices = getChoices();
         int selected = arguments.getInt(ARG_SELECTED_CHOICE);
@@ -141,8 +132,19 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
         view.setAdapter(adapter);
         if (selected >= 0)
             view.setSelection(selected);
-        dialog.setView(view);
 
+        builder.setView(view);
+
+        final Dialog dialog = builder.create();
+
+        view.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                int position, long id) {
+                onClick(dialog, position);
+            }
+        });
         return dialog;
     }
 

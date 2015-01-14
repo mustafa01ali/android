@@ -26,6 +26,8 @@
         android:clickable="false"
         android:focusable="false"
         android:focusableInTouchMode="false"
+        android:button="@drawable/btn_radio_bg"
+        android:buttonTint="@color/dialogs_accent"
         android:paddingRight="10dp" />
 
     <TextView

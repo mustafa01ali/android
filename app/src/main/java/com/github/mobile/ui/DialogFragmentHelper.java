@@ -16,7 +16,6 @@
 package com.github.mobile.ui;
 
 import static android.app.Activity.RESULT_CANCELED;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
@@ -24,6 +23,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 
 import roboguice.fragment.RoboDialogFragment;
 
@@ -129,13 +130,14 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
      *
      * @return dialog
      */
-    protected AlertDialog createDialog() {
-        final AlertDialog dialog = LightAlertDialog.create(getActivity());
-        dialog.setTitle(getTitle());
-        dialog.setMessage(getMessage());
-        dialog.setCancelable(true);
-        dialog.setOnCancelListener(this);
-        return dialog;
+    protected MaterialDialogCompat.Builder createDialog() {
+        final MaterialDialogCompat.Builder builder = new MaterialDialogCompat.Builder(getActivity())
+            .setTitle(getTitle())
+            .setMessage(getMessage())
+            .setCancelable(true)
+            .setOnCancelListener(this);
+
+        return builder;
     }
 
     @Override
