@@ -19,7 +19,6 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_NEUTRAL;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -27,9 +26,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.mobile.R;
@@ -115,23 +114,14 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
         Activity activity = getActivity();
         Bundle arguments = getArguments();
 
-        final AlertDialog dialog = createDialog();
-        dialog.setButton(BUTTON_NEGATIVE, activity.getString(R.string.cancel),
-                this);
-        dialog.setButton(BUTTON_NEUTRAL, activity.getString(R.string.clear), this);
+        MaterialDialogCompat.Builder builder = createDialog();
+        builder.setNegativeButton(R.string.cancel, this);
+        builder.setNeutralButton(R.string.clear, this);
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
         ListView view = (ListView) inflater.inflate(R.layout.dialog_list_view,
                 null);
-        view.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                onClick(dialog, position);
-            }
-        });
 
         ArrayList<Milestone> choices = getChoices();
         int selected = arguments.getInt(ARG_SELECTED_CHOICE);
@@ -140,7 +130,17 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
         view.setAdapter(adapter);
         if (selected >= 0)
             view.setSelection(selected);
-        dialog.setView(view);
+        builder.setView(view);
+
+        final Dialog dialog = builder.create();
+        view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                int position, long id) {
+                onClick(dialog, position);
+            }
+        });
 
         return dialog;
     }

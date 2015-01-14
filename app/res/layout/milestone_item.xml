@@ -25,6 +25,8 @@
         android:layout_centerVertical="true"
         android:clickable="false"
         android:focusable="false"
+        android:button="@drawable/btn_radio_bg"
+        android:buttonTint="@color/dialogs_accent"
         android:focusableInTouchMode="false" />
 
     <LinearLayout
